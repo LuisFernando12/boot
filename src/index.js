@@ -42,10 +42,30 @@ const robot = async (profile, browser) => {
         //Register
         await page.goto(siteRegister);
         await page.waitForTimeout(8000);
+
+        await page.waitForSelector('input[name="fullname"]' , {
+            timeout: 1000
+        });
         await page.type('input[name="fullname"]', profile.fullname, { delay: 400 });
+       
+        await page.waitForSelector('input[name="username"]' , {
+            timeout: 1000
+        });
         await page.type('input[name="username"]', profile.username, { delay: 400 });
+
+        await page.waitForSelector('input[name="email"]' , {
+            timeout: 1000
+        });
         await page.type('input[name="email"]', profile.email, { delay: 400 });
+
+        await page.waitForSelector('input[name="password"]' , {
+            timeout: 1000
+        });
         await page.type('input[name="password"]', profile.password, { delay: 400 });
+
+        await page.waitForSelector('input[name="passwordAgain"]' , {
+            timeout: 1000
+        });
         await page.type('input[name="passwordAgain"]', profile.password, { delay: 400 });
         await page.evaluate(() => {
             document.querySelector('input[name="terms"]').click();
