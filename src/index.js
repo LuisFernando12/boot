@@ -5,7 +5,9 @@ const {
 } = require('uuid');
 const fs = require('fs')
 var count = 1;
-const url = "https://social-sg.xyz/700388236171";
+const url = "https://social-sh.xyz/700388236171";
+const siteRegister = "https://social-sh.xyz/register.php";
+const siteDashboard = "https://social-sh.xyz/dashboard.php";
 var arrayProfiles = [];
 var listEmails = [];
 const readEmail = file => new Promise((resolve, reject) => {
@@ -26,13 +28,7 @@ const readEmail = file => new Promise((resolve, reject) => {
 // }
 
 const robot = async (profile, browser) => {
-    if (profile !== undefined && count<100) {
-        // const browser = await puppeteer.launch({
-        //     headless: false
-        // }
-        // );
-        const siteRegister = "https://social-sf.xyz/register.php";
-        const siteDashboard = "https://social-eh.xyz/dashboard.php";
+    if (profile !== undefined && count < 100) {
         const page = await browser.newPage();
         await page.setViewport({
             width: 900,
@@ -59,7 +55,10 @@ const robot = async (profile, browser) => {
         try {
             await page.waitForTimeout(6000);
             await page.click('button[class="close"]');
-            await page.waitForTimeout(6000);
+            await page.evaluate(() => {
+                window.scrollBy(0, window.innerHeight);
+            });
+            await page.waitForTimeout(10000);
             await page.screenshot({ path: `${profile.username}.png`, fullPage: true });
         } catch (e) {
             console.log(e);
@@ -75,7 +74,7 @@ const robot = async (profile, browser) => {
 
 };
 
-const generateProfile = async ()=>{
+const generateProfile = async () => {
     const browser = await puppeteer.launch({
         headless: false
     }
@@ -90,27 +89,27 @@ const generateProfile = async ()=>{
 
     await page.click('#app-content > section > div.container > div > div.col > div.generator-container > div > div > div > div.generator > form > button');
 
-     return {
-         profile: await page.evaluate(async () => {
-        const email = document.querySelector("#copyToClipboard-email").value;
-        console.log(email);
-        if (email.split("@")[0].length > 5) {
-            const profile = {
-                fullname: email.split("@")[0],
-                username: email.split("@")[0],
-                email: email,
-                // password: uuidv4().split('-').pop()
-                password: `teste${Math.random(4)*10}`
+    return {
+        profile: await page.evaluate(async () => {
+            const email = document.querySelector("#copyToClipboard-email").value;
+            console.log(email);
+            if (email.split("@")[0].length > 5) {
+                const profile = {
+                    fullname: email.split("@")[0],
+                    username: email.split("@")[0],
+                    email: email,
+                    // password: uuidv4().split('-').pop()
+                    password: `teste${Math.random(4) * 10}`
+                }
+                return profile;
             }
-            return profile;
-        } 
-    }),
-    browser: browser
-}
+        }),
+        browser: browser
+    }
 };
-const bridgeProfile = async()=>{
-    const {profile, browser} = await generateProfile()
-     robot(profile, browser);
+const bridgeProfile = async () => {
+    const { profile, browser } = await generateProfile()
+    robot(profile, browser);
 };
 bridgeProfile();
     // (async () => {
