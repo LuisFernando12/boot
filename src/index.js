@@ -59,7 +59,7 @@ const robot = async (profile, browser) => {
                 window.scrollBy(0, window.innerHeight);
             });
             await page.waitForTimeout(10000);
-            await page.screenshot({ path: `${profile.username}.png`, fullPage: true });
+            await page.screenshot({ path: `src/img/${profile.username}.png`, fullPage: true });
         } catch (e) {
             console.log(e);
         } finally {
