@@ -4,10 +4,12 @@ const {
     v4: uuidv4,
 } = require('uuid');
 const fs = require('fs')
+require('dotenv').config()
+
 var count = 1;
-const url = "https://social-sh.xyz/700388236171";
-const siteRegister = "https://social-sh.xyz/register.php";
-const siteDashboard = "https://social-sh.xyz/dashboard.php";
+const url = process.URL;
+const siteRegister = process.URL.split('/')[0]+"/register.php";
+const siteDashboard = process.URL.split('/')[0]+"/dashboard.php";
 var arrayProfiles = [];
 var listEmails = [];
 const readEmail = file => new Promise((resolve, reject) => {
