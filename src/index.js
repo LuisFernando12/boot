@@ -1,15 +1,15 @@
 const puppeteer = require('puppeteer');
+require('dotenv').config()
 const {
     v1: uuidv1,
     v4: uuidv4,
 } = require('uuid');
 const fs = require('fs')
-require('dotenv').config()
 
 var count = 1;
-const url = process.URL;
-const siteRegister = process.URL.split('/')[0]+"/register.php";
-const siteDashboard = process.URL.split('/')[0]+"/dashboard.php";
+const url = process.env.URL;
+const siteRegister = process.env.SITE_REGISTER;
+console.log(url);
 var arrayProfiles = [];
 var listEmails = [];
 const readEmail = file => new Promise((resolve, reject) => {
