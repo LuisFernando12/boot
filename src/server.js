@@ -1,5 +1,5 @@
-'use-strict'
 const puppeteer = require('puppeteer');
+require('dotenv').config()
 const fs = require('fs')
 const {
     v1: uuidv1,
@@ -8,9 +8,7 @@ const {
 var arrayProfiles = [];
 var listEmails = [];
 var count = 0;
-const url = "https://social-aj.xyz/841012954594";
-const siteRegister = "https://social-aj.xyz/register.php";
-const siteDashboard = "https://social-aj.xyz/dashboard.php";
+const url = process.env.URL;
 const readEmail = file => new Promise((resolve, reject) => {
     fs.readFile(file, (err, contents) => {
         if (err) {
@@ -39,8 +37,13 @@ const robot = async (profile) => {
             height: 900
         })
         await page.goto(url);
-        await page.evaluate(async () => {
-            await document.querySelector('a[class="btn btn-white d-none d-md-block"]').click();
+
+        const siteRegister = await page.evaluate(() => {
+            document.querySelector('a[class="btn btn-white d-none d-md-block"]').target = "_self";
+            return document.querySelector('a[class="btn btn-white d-none d-md-block"]').href;
+        })
+        await page.evaluate(() => {
+             document.querySelector('a[class="btn btn-white d-none d-md-block"]').click();
         })
 
         //Register

@@ -8,32 +8,20 @@ const fs = require('fs')
 
 var count = 0;
 const url = process.env.URL;
-const siteRegister = process.env.SITE_REGISTER;
-const siteDashboard = "https://social-aj.xyz/dashboard.php";
-console.log(url);
-var arrayProfiles = [];
-var listEmails = [];
-const readEmail = file => new Promise((resolve, reject) => {
-    fs.readFile(file, (err, contents) => {
-        if (err) {
-            reject(err);
-        } else {
-            resolve(contents)
-        }
-    })
-});
 
-
-const robot = async (profile, browser) => {
+const robot = async (profile, browser, page) => {
     if (profile !== undefined && count < 100) {
-        const page = await browser.newPage();
         await page.setViewport({
             width: 900,
             height: 900
         })
         await page.goto(url);
+        const siteRegister = await page.evaluate(async () => {
+            document.querySelector('a[class="btn btn-white d-none d-md-block"]').target = "_self";
+            return document.querySelector('a[class="btn btn-white d-none d-md-block"]').href;
+        })
         await page.evaluate(async () => {
-            await document.querySelector('a[class="btn btn-white d-none d-md-block"]').click();
+             document.querySelector('a[class="btn btn-white d-none d-md-block"]').click();
         })
 
         //Register
@@ -93,7 +81,7 @@ const robot = async (profile, browser) => {
 
 const generateProfile = async () => {
     const browser = await puppeteer.launch({
-        headless: false
+        headless: true
     }
     );
     const page = await browser.newPage();
@@ -120,12 +108,13 @@ const generateProfile = async () => {
                 return profile;
             }
         }),
-        browser: browser
+        browser: browser,
+        page:page
     }
 };
 const bridgeProfile = async () => {
-    const { profile, browser } = await generateProfile();
-    robot(profile, browser);
+    const { profile, browser, page } = await generateProfile();
+    robot(profile, browser, page);
 };
 bridgeProfile();
     
