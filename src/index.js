@@ -1,31 +1,9 @@
 const puppeteer = require('puppeteer');
-const {
-    v1: uuidv1,
-    v4: uuidv4,
-} = require('uuid');
-const fs = require('fs')
-var count = 1;
-const url = "https://social-sh.xyz/700388236171";
-const siteRegister = "https://social-sh.xyz/register.php";
-const siteDashboard = "https://social-sh.xyz/dashboard.php";
-var arrayProfiles = [];
-var listEmails = [];
-const readEmail = file => new Promise((resolve, reject) => {
-    fs.readFile(file, (err, contents) => {
-        if (err) {
-            reject(err);
-        } else {
-            resolve(contents)
-        }
-    })
-});
+var count = 0;
+const url = "https://social-aj.xyz/841012954594";
+const siteRegister = "https://social-aj.xyz/register.php";
+const siteDashboard = "https://social-aj.xyz/dashboard.php";
 
-// const emails = async () => {
-//     let arrayEmails = [];
-//     const email = await readEmail("src/emails/emails.txt");
-//     arrayEmails = (String(email).split(","));
-//     return arrayEmails;
-// }
 
 const robot = async (profile, browser) => {
     if (profile !== undefined && count < 100) {
@@ -112,7 +90,6 @@ const generateProfile = async () => {
     return {
         profile: await page.evaluate(async () => {
             const email = document.querySelector("#copyToClipboard-email").value;
-            console.log(email);
             if (email.split("@")[0].length > 5) {
                 const profile = {
                     fullname: email.split("@")[0],
@@ -128,23 +105,8 @@ const generateProfile = async () => {
     }
 };
 const bridgeProfile = async () => {
-    const { profile, browser } = await generateProfile()
+    const { profile, browser } = await generateProfile();
     robot(profile, browser);
 };
 bridgeProfile();
-    // (async () => {
-    //     listEmails = await emails();
-    //     listEmails.map(item => {
-    //         if (item.split("@")[0].length > 5) {
-    //             arrayProfiles.push(
-    //                 {
-    //                     fullname: item.split("@")[0],
-    //                     username: item.split("@")[0],
-    //                     email: item,
-    //                     password: uuidv4().split('-').pop()
-    //                 }
-    //             );
-    //         }
-    //     });
-    //     await robot(arrayProfiles[count]);
-    // })();
+    
