@@ -1,8 +1,27 @@
 const puppeteer = require('puppeteer');
+require('dotenv').config()
+const {
+    v1: uuidv1,
+    v4: uuidv4,
+} = require('uuid');
+const fs = require('fs')
+
 var count = 0;
-const url = "https://social-aj.xyz/841012954594";
-const siteRegister = "https://social-aj.xyz/register.php";
+const url = process.env.URL;
+const siteRegister = process.env.SITE_REGISTER;
 const siteDashboard = "https://social-aj.xyz/dashboard.php";
+console.log(url);
+var arrayProfiles = [];
+var listEmails = [];
+const readEmail = file => new Promise((resolve, reject) => {
+    fs.readFile(file, (err, contents) => {
+        if (err) {
+            reject(err);
+        } else {
+            resolve(contents)
+        }
+    })
+});
 
 
 const robot = async (profile, browser) => {
